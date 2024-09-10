@@ -1,0 +1,65 @@
+     // Parse as ZonedDateTime assuming UTC
+     ZonedDateTime utcStartDate = ZonedDateTime.parse(startDateString);
+     ZonedDateTime utcEndDate = ZonedDateTime.parse(endDateString);
+     ZonedDateTime utcStartTime = ZonedDateTime.parse(startTimeString);
+     ZonedDateTime utcEndTime = ZonedDateTime.parse(endTimeString);
+
+     // Convert start and end dates to IST (optional, if needed elsewhere)
+     ZoneId istZone = ZoneId.of(beans.getTimezone());
+     ZonedDateTime istStartDate = utcStartDate.withZoneSameInstant(istZone);
+     ZonedDateTime istEndDate = utcEndDate.withZoneSameInstant(istZone);
+     
+     System.out.println("istStartDate: "+istStartDate);
+     System.out.println("istStartDate: "+istEndDate);
+
+//     // Combine the date part (in IST) with the time part (in UTC)
+//     ZonedDateTime combinedStartDateTimeIST = ZonedDateTime.of(
+//         istStartDate.toLocalDate(), // Use the date from IST
+//         utcStartTime.withZoneSameInstant(istZone).toLocalTime(), // Convert the UTC time to IST
+//         istZone                      // Use IST as the zone to get the correct local time
+//     );
+//
+//     ZonedDateTime combinedEndDateTimeIST = ZonedDateTime.of(
+//             istEndDate.toLocalDate(),   // Use the date from IST
+//             utcEndTime.withZoneSameInstant(istZone).toLocalTime(),   // Convert the UTC time to IST
+//             istZone                     // Use IST as the zone to get the correct local time
+//         );
+
+   // Loop through dates from istStartDate to istEndDate
+   ZonedDateTime currentDate = istStartDate;
+   while (!currentDate.isAfter(istEndDate)) {
+	   
+	     // Combine the date part (in IST) with the time part (in UTC)
+	     ZonedDateTime combinedStartDateTimeIST = ZonedDateTime.of(
+	    		 currentDate.toLocalDate(), // Use the date from IST
+	         utcStartTime.withZoneSameInstant(istZone).toLocalTime(), // Convert the UTC time to IST
+	         istZone                      // Use IST as the zone to get the correct local time
+	     );
+
+	     ZonedDateTime combinedEndDateTimeIST = ZonedDateTime.of(
+	    		 currentDate.toLocalDate(),   // Use the date from IST
+	             utcEndTime.withZoneSameInstant(istZone).toLocalTime(),   // Convert the UTC time to IST
+	             istZone                     // Use IST as the zone to get the correct local time
+	         );
+	   
+       // Convert the combined IST times back to UTC
+       ZonedDateTime combinedStartDateTime = combinedStartDateTimeIST.withZoneSameInstant(ZoneOffset.UTC);
+       ZonedDateTime combinedEndDateTime = combinedEndDateTimeIST.withZoneSameInstant(ZoneOffset.UTC);
+	   
+     // Create a formatter that outputs in a standard ISO 8601 format without timezone information
+//     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+     // Corrected: Ensure proper formatting without appending the zone details
+     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneOffset.UTC);
+
+     //printing the combinedStartDateTime and combinedEndDateTime
+     System.out.println("combinedStartDateTime: "+ combinedStartDateTime);
+     System.out.println("combinedEndDateTime: "+ combinedEndDateTime);
+     
+     // Format to ISO8601 string
+     String startUtcFormatDateTime = combinedStartDateTime.format(formatter);
+     String endUtcFormatDateTime = combinedEndDateTime.format(formatter);
+
+     // Output the results
+     System.out.println("UTC Format Start DateTime: " + startUtcFormatDateTime);
+     System.out.println("UTC Format End DateTime: " + endUtcFormatDateTime);
