@@ -1,0 +1,37 @@
+ // List of required fields
+            String[] requiredFields = {"authId", "firstName", "petType", "breed", "dob", "age", "gender"};
+            List<String> missingFields = new ArrayList<>();
+
+            // Check for null or missing fields
+            for (String field : requiredFields) {
+                if (UtilityClass.isNull(json.get(field))) {
+                    missingFields.add(field);
+                }
+            }
+
+            // If there are missing fields, throw an exception with details
+            if (!missingFields.isEmpty()) {
+    				JSONObject obj = new JSONObject();
+    	            obj.put("message", "Missing fields: " + String.join(", ", missingFields));
+    	            obj.put("status", ResponseDetails.BAD_REQUEST_HttpStatusCode);
+    	            
+    				System.out.println("\n"+"Response: " + obj.toString());
+    				return Response.status(ResponseDetails.BAD_REQUEST_HttpStatusCode)
+                        	       .entity(obj.toString())
+                        	       .build();
+            }
+
+
+OR
+
+		if( UtilityClass.isNull(patientId) )
+		{
+			JSONObject obj = new JSONObject();
+            obj.put("message", ResponseDetails.generateRequiredFieldMessage("patientId"));
+            obj.put("status", ResponseDetails.BAD_REQUEST_HttpStatusCode);
+            
+			System.out.println("\n"+"Response: " + obj.toString());
+			return Response.status(ResponseDetails.BAD_REQUEST_HttpStatusCode)
+                	       .entity(obj.toString())
+                	       .build();
+		}
