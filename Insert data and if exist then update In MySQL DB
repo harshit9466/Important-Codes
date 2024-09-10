@@ -1,0 +1,30 @@
+-- before one
+INSERT INTO settings (user_id, currency, timezone) VALUES(2, 'INR', 'Asia/Kolkata') ON DUPLICATE KEY
+UPDATE user_id = VALUES(user_id), currency = VALUES(currency), timezone = VALUES(timezone)
+
+-- USE this one
+INSERT INTO settings (user_id, currency, timezone)
+VALUES (2, 'USD', 'Asia/Kolkata')
+AS new_values
+ON DUPLICATE KEY UPDATE
+    user_id = new_values.user_id,
+    currency = new_values.currency,
+    timezone = new_values.timezone;
+
+
+
+||||||||||||||||||GET AUTO GENERATED KEYS OF THE INSERT QUERY
+PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) 
+                {              
+		    JSONObject response = new JSONObject(); 
+                    response.put("messageId", generatedKeys.getLong(1));
+                } 
+
+
+
+
+INSERT INTO `timezone_list` (`id`, `value`, `active_status`, `abbr`, `offset`, `isdst`, `text`, `timezone`, `created_on`) VALUES (1, 'India Standard Time', 1, 'IST', '6', NULL, '(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi', 'Asia/Kolkata', '2024-01-23 15:29:34');
+INSERT INTO `timezone_list` (`id`, `value`, `active_status`, `abbr`, `offset`, `isdst`, `text`, `timezone`, `created_on`) VALUES (3, 'Pacific Standard Time', 1, 'PST', '-8', NULL, '(UTC-08:00) Pacific Time (US & Canada)', 'America/Los_Angeles', '2024-01-23 15:29:34');
+INSERT INTO `timezone_list` (`id`, `value`, `active_status`, `abbr`, `offset`, `isdst`, `text`, `timezone`, `created_on`) VALUES (4, 'Pacific Standard Time', 1, 'PST', '-7', NULL, '(UTC-07:00) Pacific Time (US & Canada)', 'America/Denver', '2024-01-23 15:29:34');
