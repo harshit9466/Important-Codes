@@ -1,0 +1,7 @@
+CREATE USER 'rijul'@'172.16.1.251' IDENTIFIED BY 'root';
+GRANT ALL PRIVILEGES ON winkdoc_local.* TO 'rijul'@'172.16.1.251';
+
+
+SELECT User, Host FROM mysql.user;
+UPDATE mysql.user SET HOST='%' WHERE User='lovepreet' AND HOST='192.168.1.8';
+FLUSH PRIVILEGES;
