@@ -1,0 +1,54 @@
+//This script sets the access_token variiable into the global and collection variable and also prints the result in the test result tab of the postman.
+
+// Parse the JSON response
+const response = pm.response.json();
+
+// Extract the access token (adjust 'access_token' to match your response key)
+const accessToken = response.access_token;
+
+// Check if the token exists and set variables
+if (accessToken) {
+    // Set as a global variable
+    pm.globals.set("access_token", accessToken);
+
+    // Set as a collection variable
+    pm.collectionVariables.set("access_token", accessToken);
+
+    // Add a test to display in the Test Results tab
+    pm.test("Access token was set successfully", function () {
+        pm.expect(accessToken).to.be.a("string"); // Verify token is a string
+        pm.expect(accessToken).to.not.be.empty;   // Verify token is not empty
+    });
+
+    // Optional: Keep console.log for debugging in Postman Console
+    console.log("Access token set successfully: " + accessToken);
+} else {
+    // Add a test to indicate failure in Test Results tab
+    pm.test("Access token was not found in response", function () {
+        pm.expect.fail("Access token not found in response: " + JSON.stringify(response));
+    });
+
+    // Log error to Postman Console
+    console.log("Error: Access token not found in response");
+}
+
+//This script sets the access_token variiable into the global and collection variable.
+
+// Parse the JSON response
+const response = pm.response.json();
+
+// Extract the access token (adjust 'access_token' to match your response key)
+const accessToken = response.access_token;
+
+// Check if the token exists
+if (accessToken) {
+    // Set as a global variable
+    pm.globals.set("access_token", accessToken);
+
+    // Set as a collection variable
+    pm.collectionVariables.set("access_token", accessToken);
+
+    console.log("Access token set successfully: " + accessToken);
+} else {
+    console.log("Error: Access token not found in response");
+}
